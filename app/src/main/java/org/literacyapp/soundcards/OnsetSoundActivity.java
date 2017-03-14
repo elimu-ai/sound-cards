@@ -148,6 +148,19 @@ public class OnsetSoundActivity extends AppCompatActivity {
                         objectAnimator.start();
                     }
                 }, 3000);
+
+                progressBar.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_swing_up_left);
+                        alt1CardView.startAnimation(animation);
+                        alt2CardView.startAnimation(animation);
+
+                        ObjectAnimator animator = ObjectAnimator.ofFloat(alt2CardView, "cardElevation", alt2CardView.getCardElevation(), alt2CardView.getCardElevation() - 10);
+                        animator.setDuration(1000);
+                        animator.start();
+                    }
+                }, 4000);
             }
         });
 
