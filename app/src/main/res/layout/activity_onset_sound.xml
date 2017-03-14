@@ -39,9 +39,7 @@
                 app:cardBackgroundColor="#33673AB7"
                 app:cardCornerRadius="48dp"
                 app:contentPadding="24dp"
-                android:rotation="-5"
-                android:clickable="true"
-                android:foreground="?android:attr/selectableItemBackground">
+                android:rotation="-5">
 
                 <ImageView
                     android:id="@+id/alt1ImageView"
@@ -61,9 +59,7 @@
                 app:cardBackgroundColor="#33FF9800"
                 app:cardCornerRadius="48dp"
                 app:contentPadding="24dp"
-                android:rotation="5"
-                android:clickable="true"
-                android:foreground="?android:attr/selectableItemBackground">
+                android:rotation="5">
 
                 <ImageView
                     android:id="@+id/alt2ImageView"

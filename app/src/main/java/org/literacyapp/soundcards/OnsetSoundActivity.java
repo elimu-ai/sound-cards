@@ -1,15 +1,18 @@
 package org.literacyapp.soundcards;
 
+import android.animation.ObjectAnimator;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -85,6 +88,30 @@ public class OnsetSoundActivity extends AppCompatActivity {
     protected void onStart() {
         Log.i(getClass().getName(), "onStart");
         super.onStart();
+
+        alt1CardView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                ObjectAnimator animator = ObjectAnimator.ofFloat(alt1CardView, "cardElevation", alt1CardView.getCardElevation(), 0, alt1CardView.getCardElevation());
+                animator.setDuration(500);
+                animator.start();
+
+                return false;
+            }
+        });
+
+        alt2CardView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                ObjectAnimator animator = ObjectAnimator.ofFloat(alt2CardView, "cardElevation", alt2CardView.getCardElevation(), 0, alt2CardView.getCardElevation());
+                animator.setDuration(500);
+                animator.start();
+
+                return false;
+            }
+        });
 
         loadNextImage();
     }
