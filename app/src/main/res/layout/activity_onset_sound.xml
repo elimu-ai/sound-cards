@@ -19,6 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/imageContainer"
             style="?android:attr/progressBarStyleHorizontal"
+            android:progressDrawable="@drawable/progressbar"
             android:progress="10" />
 
         <View
