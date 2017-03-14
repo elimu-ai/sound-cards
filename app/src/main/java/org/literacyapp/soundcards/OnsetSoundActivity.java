@@ -1,11 +1,7 @@
 package org.literacyapp.soundcards;
 
 import android.animation.ObjectAnimator;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.TransitionDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,7 +18,6 @@ import android.widget.ProgressBar;
 import org.literacyapp.contentprovider.ContentProvider;
 import org.literacyapp.contentprovider.model.content.Word;
 import org.literacyapp.contentprovider.model.content.multimedia.Audio;
-import org.literacyapp.contentprovider.model.content.multimedia.Image;
 import org.literacyapp.soundcards.util.MediaPlayerHelper;
 import org.literacyapp.soundcards.util.MultimediaHelper;
 import org.literacyapp.soundcards.util.TtsHelper;
@@ -39,7 +34,7 @@ public class OnsetSoundActivity extends AppCompatActivity {
 
     private List<Word> wordsCorrectlySelected;
 
-//    private ProgressBar progressBar;
+    private ProgressBar progressBar;
 
     private CardView alt1CardView;
     private ImageView alt1ImageView;
@@ -56,7 +51,7 @@ public class OnsetSoundActivity extends AppCompatActivity {
 
         wordsCorrectlySelected = new ArrayList<>();
 
-//        progressBar = (ProgressBar) findViewById(R.id.listenAndSelectProgressBar);
+        progressBar = (ProgressBar) findViewById(R.id.listenAndSelectProgressBar);
 
         alt1CardView = (CardView) findViewById(R.id.alt1CardView);
         alt1ImageView = (ImageView) findViewById(R.id.alt1ImageView);
@@ -101,15 +96,58 @@ public class OnsetSoundActivity extends AppCompatActivity {
             }
         });
 
-        alt2CardView.setOnTouchListener(new View.OnTouchListener() {
+        alt1CardView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
+            public void onClick(View v) {
+                Log.i(getClass().getName(), "alt1CardView onClick");
 
-                ObjectAnimator animator = ObjectAnimator.ofFloat(alt2CardView, "cardElevation", alt2CardView.getCardElevation(), 0, alt2CardView.getCardElevation());
-                animator.setDuration(500);
+                MediaPlayerHelper.play(getApplicationContext(), R.raw.alternative_incorrect);
+
+                Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_shake);
+                alt1CardView.startAnimation(animation);
+            }
+        });
+
+//        alt2CardView.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//
+//                ObjectAnimator animator = ObjectAnimator.ofFloat(alt2CardView, "cardElevation", alt2CardView.getCardElevation(), 0, alt2CardView.getCardElevation());
+//                animator.setDuration(500);
+//                animator.start();
+//
+//                return false;
+//            }
+//        });
+
+        alt2CardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(getClass().getName(), "alt1CardView onClick");
+
+                MediaPlayerHelper.play(getApplicationContext(), R.raw.alternative_correct);
+
+                ObjectAnimator animator = ObjectAnimator.ofFloat(alt2CardView, "cardElevation", alt2CardView.getCardElevation(), alt2CardView.getCardElevation() + 10);
+                animator.setDuration(1000);
                 animator.start();
 
-                return false;
+                alt2CardView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_disappear_left);
+                        alt1CardView.startAnimation(animation);
+                        alt2CardView.startAnimation(animation);
+                    }
+                }, 2000);
+
+                progressBar.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        ObjectAnimator objectAnimator = ObjectAnimator.ofInt(progressBar, "progress", 20);
+                        objectAnimator.setDuration(1000);
+                        objectAnimator.start();
+                    }
+                }, 3000);
             }
         });
 
