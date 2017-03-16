@@ -1,6 +1,8 @@
 package org.literacyapp.soundcards;
 
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.graphics.Color;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.media.MediaPlayer;
@@ -89,7 +91,12 @@ public class OnsetSoundActivity extends AppCompatActivity {
         Log.i(getClass().getName(), "onStart");
         super.onStart();
 
-
+        // Animate suddle head movements
+        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(emojiImageView, "rotation", 2);
+        objectAnimator.setDuration(1000);
+        objectAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        objectAnimator.setRepeatMode(ValueAnimator.REVERSE);
+        objectAnimator.start();
 
         emojiImageView.postDelayed(new Runnable() {
             @Override
