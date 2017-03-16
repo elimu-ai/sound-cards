@@ -2,6 +2,7 @@ package org.literacyapp.soundcards;
 
 import android.animation.ObjectAnimator;
 import android.graphics.Color;
+import android.graphics.drawable.AnimatedVectorDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -34,6 +35,8 @@ public class OnsetSoundActivity extends AppCompatActivity {
 
     private List<Word> wordsCorrectlySelected;
 
+    private ImageView emojiImageView;
+
     private ProgressBar progressBar;
 
     private CardView alt1CardView;
@@ -51,7 +54,9 @@ public class OnsetSoundActivity extends AppCompatActivity {
 
         wordsCorrectlySelected = new ArrayList<>();
 
-        progressBar = (ProgressBar) findViewById(R.id.listenAndSelectProgressBar);
+        emojiImageView = (ImageView) findViewById(R.id.emoji);
+
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         alt1CardView = (CardView) findViewById(R.id.alt1CardView);
         alt1ImageView = (ImageView) findViewById(R.id.alt1ImageView);
@@ -83,6 +88,16 @@ public class OnsetSoundActivity extends AppCompatActivity {
     protected void onStart() {
         Log.i(getClass().getName(), "onStart");
         super.onStart();
+
+
+
+        emojiImageView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                AnimatedVectorDrawable animatedVectorDrawable = (AnimatedVectorDrawable) emojiImageView.getDrawable();
+                animatedVectorDrawable.start();
+            }
+        }, 2000);
 
         alt1CardView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -126,6 +141,8 @@ public class OnsetSoundActivity extends AppCompatActivity {
                 Log.i(getClass().getName(), "alt1CardView onClick");
 
                 MediaPlayerHelper.play(getApplicationContext(), R.raw.alternative_correct);
+
+                alt2CardView.setCardBackgroundColor(Color.parseColor("#66FF9800"));
 
                 ObjectAnimator animator = ObjectAnimator.ofFloat(alt2CardView, "cardElevation", alt2CardView.getCardElevation(), alt2CardView.getCardElevation() + 10);
                 animator.setDuration(1000);
