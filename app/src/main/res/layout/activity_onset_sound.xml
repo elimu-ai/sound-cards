@@ -16,7 +16,7 @@
         <ImageView
             android:id="@+id/emoji"
             android:layout_width="match_parent"
-            android:layout_height="256dp"
+            android:layout_height="@dimen/emoji_height"
             android:src="@drawable/animated_emoji_u1f603" />
 
         <View

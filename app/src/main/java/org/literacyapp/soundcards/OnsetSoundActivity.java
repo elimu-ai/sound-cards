@@ -3,6 +3,7 @@ package org.literacyapp.soundcards;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.media.MediaPlayer;
@@ -19,8 +20,12 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import org.literacyapp.contentprovider.ContentProvider;
+import org.literacyapp.contentprovider.dao.AudioDao;
+import org.literacyapp.contentprovider.dao.converter.SoundTypeConverter;
+import org.literacyapp.contentprovider.model.content.Letter;
 import org.literacyapp.contentprovider.model.content.Word;
 import org.literacyapp.contentprovider.model.content.multimedia.Audio;
+import org.literacyapp.contentprovider.model.content.multimedia.Image;
 import org.literacyapp.soundcards.util.MediaPlayerHelper;
 import org.literacyapp.soundcards.util.MultimediaHelper;
 import org.literacyapp.soundcards.util.TtsHelper;
@@ -66,30 +71,33 @@ public class OnsetSoundActivity extends AppCompatActivity {
         alt2CardView = (CardView) findViewById(R.id.alt2CardView);
         alt2ImageView = (ImageView) findViewById(R.id.alt2ImageView);
 
-//        // Fetch 10 most frequent words with matching audio and image
-//        wordsWithMatchingAudioAndImage = new ArrayList<>();
-//        List<Word> words = ContentProvider.getAllWordsOrderedByFrequency();
-//        Log.i(getClass().getName(), "words.size(): " + words.size());
-//        for (Word word : words) {
-//            Audio matchingAudio = ContentProvider.getAudio(word.getText());
-//            Image matchingImage = ContentProvider.getImage(word.getText());
-//            // TODO: add audio as requirement
-//            if (/*(matchingAudio != null) &&*/ (matchingImage != null)) {
-//                Log.i(getClass().getName(), "Adding \"" + word.getText() + "\"...");
-//                Log.i(getClass().getName(), "matchingImage.getDominantColor(): " + matchingImage.getDominantColor());
-//                wordsWithMatchingAudioAndImage.add(word);
-//            }
-//            if (wordsWithMatchingAudioAndImage.size() == 10) {
-//                break;
-//            }
-//        }
-//        Log.i(getClass().getName(), "wordsWithMatchingAudioAndImage.size(): " + wordsWithMatchingAudioAndImage.size());
+        // Fetch 10 most frequent words with matching audio and image
+        wordsWithMatchingAudioAndImage = new ArrayList<>();
+        List<Word> words = ContentProvider.getAllWordsOrderedByFrequency();
+        Log.i(getClass().getName(), "words.size(): " + words.size());
+        for (Word word : words) {
+            Audio matchingAudio = ContentProvider.getAudio(word.getText());
+            Image matchingImage = ContentProvider.getImage(word.getText());
+            // TODO: add audio as requirement
+            if (/*(matchingAudio != null) &&*/ (matchingImage != null)) {
+                Log.i(getClass().getName(), "Adding \"" + word.getText() + "\"...");
+                Log.i(getClass().getName(), "matchingImage.getDominantColor(): " + matchingImage.getDominantColor());
+                wordsWithMatchingAudioAndImage.add(word);
+            }
+            if (wordsWithMatchingAudioAndImage.size() == 10) {
+                break;
+            }
+        }
+        Log.i(getClass().getName(), "wordsWithMatchingAudioAndImage.size(): " + wordsWithMatchingAudioAndImage.size());
     }
 
     @Override
     protected void onStart() {
         Log.i(getClass().getName(), "onStart");
         super.onStart();
+
+        TtsHelper.speak(getApplicationContext(), "Which word begins with this sound?");
+        // TODO: play letter sound
 
         // Animate suddle head movements
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(emojiImageView, "rotation", 2);
@@ -336,6 +344,44 @@ public class OnsetSoundActivity extends AppCompatActivity {
             return colorIdentifier;
         } else {
             return -1;
+        }
+    }
+
+    private void playLetterSound(Letter letter) {
+        Log.i(getClass().getName(), "playLetterSound");
+
+        // Look up corresponding Audio
+        Log.d(getClass().getName(), "Looking up \"letter_sound_" + letter.getText() + "\"");
+        Audio audio = ContentProvider.getAudio("letter_sound_" + letter.getText());
+        Log.i(getClass().getName(), "audio: " + audio);
+        if (audio != null) {
+            // Play audio
+            File audioFile = MultimediaHelper.getFile(audio);
+            Uri uri = Uri.parse(audioFile.getAbsolutePath());
+            MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
+            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mediaPlayer) {
+                    Log.i(getClass().getName(), "mediaPlayer onCompletion");
+                    mediaPlayer.release();
+                }
+            });
+            mediaPlayer.start();
+        } else {
+            // Audio not found. Fall-back to application resource.
+            String audioFileName = "letter_sound_" + letter.getText();
+            int resourceId = getResources().getIdentifier(audioFileName, "raw", getPackageName());
+            try {
+                if (resourceId != 0) {
+                    MediaPlayerHelper.play(getApplicationContext(), resourceId);
+                } else {
+                    // Fall-back to TTS
+                    TtsHelper.speak(getApplicationContext(), letter.getText());
+                }
+            } catch (Resources.NotFoundException e) {
+                // Fall-back to TTS
+                TtsHelper.speak(getApplicationContext(), letter.getText());
+            }
         }
     }
 
