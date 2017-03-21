@@ -21,5 +21,4 @@
         <activity
             android:name="org.literacyapp.soundcards.OnsetSoundActivity" />
     </application>
-
 </manifest>

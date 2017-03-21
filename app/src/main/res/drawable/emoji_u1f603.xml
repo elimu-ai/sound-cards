@@ -1,0 +1,26 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="72dp"
+    android:height="72dp"
+    android:viewportHeight="128.0"
+    android:viewportWidth="128.0">
+
+    <path
+        android:name="skin"
+        android:fillColor="#A6A59ADD"
+        android:pathData="M127.13,94.29c0,13.81 -28.17,25 -62.96,25c-34.78,0 -62.98,-11.2 -62.98,-25c0,-13.82 1.47,-83.61 62.98,-83.61C125.67,10.69 127.13,80.48 127.13,94.29" />
+    <path
+        android:name="left_eye"
+        android:fillColor="#2F2F2F"
+        android:pathData="@string/u1f603_left_eye_open" />
+    <path
+        android:name="right_eye"
+        android:fillColor="#2F2F2F"
+        android:pathData="@string/u1f603_right_eye_open" />
+    <group
+        android:name="mouth_group">
+        <path
+            android:name="mouth"
+            android:fillColor="#CC7968CD"
+            android:pathData="M44.469,82.373 C43.776,83.08 43.642,84.322 53.856,85.23 C45.492,92.214 54.273,96.664 65.027,96.664 C76.661,96.664 73.291,91.673 74.42,85.228 C84.563,84.408 84.383,83.45 83.482,82.708 C80.996,80.663 75.871,83.14 65.408,83.14 C54.542,83.141 47.27,79.518 44.469,82.373 z" />
+    </group>
+</vector>
