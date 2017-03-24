@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.AnimatedVectorDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -27,8 +26,8 @@ import org.literacyapp.contentprovider.model.content.Letter;
 import org.literacyapp.contentprovider.model.content.Word;
 import org.literacyapp.contentprovider.model.content.multimedia.Audio;
 import org.literacyapp.contentprovider.model.content.multimedia.Image;
+import org.literacyapp.contentprovider.util.MultimediaHelper;
 import org.literacyapp.soundcards.util.MediaPlayerHelper;
-import org.literacyapp.soundcards.util.MultimediaHelper;
 import org.literacyapp.soundcards.util.TtsHelper;
 
 import java.io.File;
