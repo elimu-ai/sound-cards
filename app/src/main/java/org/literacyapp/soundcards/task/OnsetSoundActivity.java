@@ -181,16 +181,16 @@ public class OnsetSoundActivity extends AppCompatActivity {
             public void run() {
                 TtsHelper.speak(getApplicationContext(), "Which word begins with this sound?");
 //                TtsHelper.speak(getApplicationContext(), "Ni neno lipi linaanza kwa sauti hii?");
-                final String letter = alt1Word.getText().substring(0, 1);
-                Log.i(getClass().getName(), "letter: " + letter);
+                final String allophone = alt1Word.getText().substring(0, 1);
+                Log.i(getClass().getName(), "allophone: " + allophone);
 
                 alt1CardView.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        playLetterSound(letter);
+                        playLetterSound(allophone);
 
-                        Log.i(getClass().getName(), "Looking up resource: animated_emoji_u1f603_mouth_" + letter);
-                        int drawableResourceId = getResources().getIdentifier("animated_emoji_u1f603_mouth_" + letter, "drawable", getPackageName());
+                        Log.i(getClass().getName(), "Looking up resource: animated_emoji_u1f603_mouth_" + allophone);
+                        int drawableResourceId = getResources().getIdentifier("animated_emoji_u1f603_mouth_" + allophone, "drawable", getPackageName());
                         final Drawable drawable = getDrawable(drawableResourceId);
                         emojiImageView.setImageDrawable(drawable);
                         AnimatedVectorDrawable animatedVectorDrawable = (AnimatedVectorDrawable) emojiImageView.getDrawable();
