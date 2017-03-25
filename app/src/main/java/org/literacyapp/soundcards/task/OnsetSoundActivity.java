@@ -1,4 +1,4 @@
-package org.literacyapp.soundcards;
+package org.literacyapp.soundcards.task;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -27,6 +27,7 @@ import org.literacyapp.contentprovider.model.content.Word;
 import org.literacyapp.contentprovider.model.content.multimedia.Audio;
 import org.literacyapp.contentprovider.model.content.multimedia.Image;
 import org.literacyapp.contentprovider.util.MultimediaHelper;
+import org.literacyapp.soundcards.R;
 import org.literacyapp.soundcards.util.MediaPlayerHelper;
 import org.literacyapp.soundcards.util.TtsHelper;
 

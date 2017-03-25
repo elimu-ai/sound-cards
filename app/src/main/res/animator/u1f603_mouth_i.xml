@@ -6,5 +6,5 @@
     android:repeatCount="1"
     android:repeatMode="reverse"
     android:valueFrom="@string/u1f603_mouth_neutral"
-    android:valueTo="@string/u1f603_mouth_t"
+    android:valueTo="@string/u1f603_mouth_i"
     android:valueType="pathType" />

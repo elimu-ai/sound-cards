@@ -19,6 +19,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="org.literacyapp.soundcards.OnsetSoundActivity" />
+            android:name="org.literacyapp.soundcards.task.OnsetSoundActivity" />
     </application>
 </manifest>
