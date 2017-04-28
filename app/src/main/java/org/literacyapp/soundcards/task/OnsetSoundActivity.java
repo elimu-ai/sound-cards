@@ -181,7 +181,8 @@ public class OnsetSoundActivity extends AppCompatActivity {
         alt1CardView.postDelayed(new Runnable() {
             @Override
             public void run() {
-                TtsHelper.speak(getApplicationContext(), getString(R.string.which_word_begins_with_this_sound));
+//                TtsHelper.speak(getApplicationContext(), getString(R.string.which_word_begins_with_this_sound));
+                MediaPlayerHelper.play(getApplicationContext(), R.raw.which_word_begins_with_this_sound);
 
                 Log.i(getClass().getName(), "alt1Word.getPhonetics(): /" + alt1Word.getPhonetics() + "/");
 
