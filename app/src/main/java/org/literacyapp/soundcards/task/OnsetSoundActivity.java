@@ -35,6 +35,7 @@ import org.literacyapp.soundcards.util.TtsHelper;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -193,6 +194,10 @@ public class OnsetSoundActivity extends AppCompatActivity {
                 final String androidResourceName = IpaToAndroidResourceConverter.getAndroidResourceName(allophoneIpa);
                 Log.i(getClass().getName(), "androidResourceName: " + androidResourceName);
 
+                int pauseBeforePlayingSound = 2500;
+                if ("sw".equals(Locale.getDefault().getLanguage())) {
+                    pauseBeforePlayingSound = 5000;
+                }
                 alt1CardView.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -323,7 +328,7 @@ public class OnsetSoundActivity extends AppCompatActivity {
                             }
                         }, 2000);
                     }
-                }, 2500);
+                }, pauseBeforePlayingSound);
             }
         }, 1000);
     }
