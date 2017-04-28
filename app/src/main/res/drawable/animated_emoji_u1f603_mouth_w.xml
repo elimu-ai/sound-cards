@@ -10,5 +10,5 @@
         android:animation="@animator/u1f603_right_eye_laughing" />
     <target
         android:name="mouth"
-        android:animation="@animator/u1f603_mouth_a_i" />
+        android:animation="@animator/u1f603_mouth_w" />
 </animated-vector>

@@ -1,4 +1,4 @@
-package org.literacyapp.soundcards;
+package org.literacyapp.soundcards.task;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -27,12 +27,15 @@ import org.literacyapp.contentprovider.model.content.Word;
 import org.literacyapp.contentprovider.model.content.multimedia.Audio;
 import org.literacyapp.contentprovider.model.content.multimedia.Image;
 import org.literacyapp.contentprovider.util.MultimediaHelper;
+import org.literacyapp.soundcards.R;
+import org.literacyapp.soundcards.util.IpaToAndroidResourceConverter;
 import org.literacyapp.soundcards.util.MediaPlayerHelper;
 import org.literacyapp.soundcards.util.TtsHelper;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -179,22 +182,45 @@ public class OnsetSoundActivity extends AppCompatActivity {
         alt1CardView.postDelayed(new Runnable() {
             @Override
             public void run() {
-                TtsHelper.speak(getApplicationContext(), "Which word begins with this sound?");
-//                TtsHelper.speak(getApplicationContext(), "Ni neno lipi linaanza kwa sauti hii?");
-                final String letter = alt1Word.getText().substring(0, 1);
-                Log.i(getClass().getName(), "letter: " + letter);
+//                TtsHelper.speak(getApplicationContext(), getString(R.string.which_word_begins_with_this_sound));
+                MediaPlayerHelper.play(getApplicationContext(), R.raw.which_word_begins_with_this_sound);
 
+                Log.i(getClass().getName(), "alt1Word.getPhonetics(): /" + alt1Word.getPhonetics() + "/");
+
+                // TODO: fetch Allophone instead of String
+//                final String allophoneIpa = alt1Word.getPhonetics().substring(0, 1);
+                // Temporary hack to handle /ɑ/
+                final String allophoneIpa = ("sw".equals(Locale.getDefault().getLanguage()) && alt1Word.getText().startsWith("a"))
+                        ? "a"
+                        : alt1Word.getPhonetics().substring(0, 1);
+                Log.i(getClass().getName(), "allophoneIpa: " + allophoneIpa);
+
+//                final String androidResourceName = IpaToAndroidResourceConverter.getAndroidResourceName(allophoneIpa);
+                // Temporary hack to handle /ɑ/
+                final String androidResourceName = ("sw".equals(Locale.getDefault().getLanguage()) && alt1Word.getText().startsWith("a"))
+                        ? "a2"
+                        : IpaToAndroidResourceConverter.getAndroidResourceName(allophoneIpa);
+                Log.i(getClass().getName(), "androidResourceName: " + androidResourceName);
+
+                int pauseBeforePlayingSound = 2500;
+                if ("sw".equals(Locale.getDefault().getLanguage())) {
+                    pauseBeforePlayingSound = 5000;
+                }
                 alt1CardView.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        playLetterSound(letter);
+                        playSound(allophoneIpa);
 
-                        Log.i(getClass().getName(), "Looking up resource: animated_emoji_u1f603_mouth_" + letter);
-                        int drawableResourceId = getResources().getIdentifier("animated_emoji_u1f603_mouth_" + letter, "drawable", getPackageName());
-                        final Drawable drawable = getDrawable(drawableResourceId);
-                        emojiImageView.setImageDrawable(drawable);
-                        AnimatedVectorDrawable animatedVectorDrawable = (AnimatedVectorDrawable) emojiImageView.getDrawable();
-                        animatedVectorDrawable.start();
+                        Log.i(getClass().getName(), "Looking up resource: animated_emoji_u1f603_mouth_" + androidResourceName);
+                        int drawableResourceId = getResources().getIdentifier("animated_emoji_u1f603_mouth_" + androidResourceName, "drawable", getPackageName());
+                        try {
+                            final Drawable drawable = getDrawable(drawableResourceId);
+                            emojiImageView.setImageDrawable(drawable);
+                            AnimatedVectorDrawable animatedVectorDrawable = (AnimatedVectorDrawable) emojiImageView.getDrawable();
+                            animatedVectorDrawable.start();
+                        } catch (Resources.NotFoundException e) {
+                            Log.w(getClass().getName(), null, e);
+                        }
 
                         alt1CardView.postDelayed(new Runnable() {
                             @Override
@@ -310,7 +336,7 @@ public class OnsetSoundActivity extends AppCompatActivity {
                             }
                         }, 2000);
                     }
-                }, 2500);
+                }, pauseBeforePlayingSound);
             }
         }, 1000);
     }
@@ -329,12 +355,12 @@ public class OnsetSoundActivity extends AppCompatActivity {
         }
     }
 
-    private void playLetterSound(String letter) {
-        Log.i(getClass().getName(), "playLetterSound");
+    private void playSound(String ipaValue) {
+        Log.i(getClass().getName(), "playSound");
 
         // Look up corresponding Audio
-        Log.d(getClass().getName(), "Looking up \"letter_sound_" + letter + "\"");
-        Audio audio = ContentProvider.getAudio("letter_sound_" + letter);
+        Log.d(getClass().getName(), "Looking up \"letter_sound_" + ipaValue + "\"");
+        Audio audio = ContentProvider.getAudio("letter_sound_" + ipaValue);
         Log.i(getClass().getName(), "audio: " + audio);
         if (audio != null) {
             // Play audio
@@ -351,18 +377,18 @@ public class OnsetSoundActivity extends AppCompatActivity {
             mediaPlayer.start();
         } else {
             // Audio not found. Fall-back to application resource.
-            String audioFileName = "letter_sound_" + letter;
+            String audioFileName = "letter_sound_" + ipaValue;
             int resourceId = getResources().getIdentifier(audioFileName, "raw", getPackageName());
             try {
                 if (resourceId != 0) {
                     MediaPlayerHelper.play(getApplicationContext(), resourceId);
                 } else {
                     // Fall-back to TTS
-                    TtsHelper.speak(getApplicationContext(), letter);
+                    TtsHelper.speak(getApplicationContext(), ipaValue);
                 }
             } catch (Resources.NotFoundException e) {
                 // Fall-back to TTS
-                TtsHelper.speak(getApplicationContext(), letter);
+                TtsHelper.speak(getApplicationContext(), ipaValue);
             }
         }
     }
