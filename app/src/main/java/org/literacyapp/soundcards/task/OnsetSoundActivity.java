@@ -188,10 +188,18 @@ public class OnsetSoundActivity extends AppCompatActivity {
                 Log.i(getClass().getName(), "alt1Word.getPhonetics(): /" + alt1Word.getPhonetics() + "/");
 
                 // TODO: fetch Allophone instead of String
-                final String allophoneIpa = alt1Word.getPhonetics().substring(0, 1);
+//                final String allophoneIpa = alt1Word.getPhonetics().substring(0, 1);
+                // Temporary hack to handle /ɑ/
+                final String allophoneIpa = ("sw".equals(Locale.getDefault().getLanguage()) && alt1Word.getText().startsWith("a"))
+                        ? "a"
+                        : alt1Word.getPhonetics().substring(0, 1);
                 Log.i(getClass().getName(), "allophoneIpa: " + allophoneIpa);
 
-                final String androidResourceName = IpaToAndroidResourceConverter.getAndroidResourceName(allophoneIpa);
+//                final String androidResourceName = IpaToAndroidResourceConverter.getAndroidResourceName(allophoneIpa);
+                // Temporary hack to handle /ɑ/
+                final String androidResourceName = ("sw".equals(Locale.getDefault().getLanguage()) && alt1Word.getText().startsWith("a"))
+                        ? "a2"
+                        : IpaToAndroidResourceConverter.getAndroidResourceName(allophoneIpa);
                 Log.i(getClass().getName(), "androidResourceName: " + androidResourceName);
 
                 int pauseBeforePlayingSound = 2500;
