@@ -22,6 +22,7 @@ import android.widget.ProgressBar;
 
 import org.literacyapp.contentprovider.ContentProvider;
 import org.literacyapp.contentprovider.dao.WordDao;
+import org.literacyapp.contentprovider.model.content.Allophone;
 import org.literacyapp.contentprovider.model.content.Letter;
 import org.literacyapp.contentprovider.model.content.Word;
 import org.literacyapp.contentprovider.model.content.multimedia.Audio;
@@ -74,29 +75,40 @@ public class OnsetSoundActivity extends AppCompatActivity {
         alt2CardView = (CardView) findViewById(R.id.alt2CardView);
         alt2ImageView = (ImageView) findViewById(R.id.alt2ImageView);
 
-        // Fetch words starting with one of the unlocked letters
+        // Fetch words starting with the sound of one of the unlocked letters
         List<Letter> unlockedLetters = ContentProvider.getUnlockedLetters();
+        List<String> allophoneStrings = new ArrayList<>();
+        for (Letter unlockedLetter : unlockedLetters) {
+            String allophoneAsString = "";
+            for (Allophone allophone : unlockedLetter.getAllophones()) {
+                allophoneAsString += allophone.getValueIpa();
+            }
+            allophoneStrings.add(allophoneAsString);
+        }
+        Log.i(getClass().getName(), "allophoneStrings: " + allophoneStrings);
         WordDao wordDao = ContentProvider.getDaoSession().getWordDao();
         String query = ""; // See http://greenrobot.org/greendao/documentation/queries/#Raw_queries
-        for (int i = 0; i < unlockedLetters.size(); i++) {
-            Letter unlockedLetter = unlockedLetters.get(i);
+        for (int i = 0; i < allophoneStrings.size(); i++) {
+            String unlockedLetterSound = allophoneStrings.get(i);
             if (i == 0) {
-                query = "WHERE T.TEXT LIKE \"" + unlockedLetter.getText() + "%\"";
+                query = "WHERE T.PHONETICS LIKE \"" + unlockedLetterSound + "%\"";
             } else {
-                query += " OR T.TEXT LIKE \"" + unlockedLetter.getText() + "%\"";
+                query += " OR T.PHONETICS LIKE \"" + unlockedLetterSound + "%\"";
             }
         }
         query += " ORDER BY T.USAGE_COUNT DESC";
         Log.i(getClass().getName(), "query: " + query);
-        List<Word> wordsStartingWithUnlockedLetter = wordDao.queryRaw(query);
-        Log.i(getClass().getName(), "wordsStartingWithUnlockedLetter.size(): " + wordsStartingWithUnlockedLetter.size());
-//        for (Word word : wordsStartingWithUnlockedLetter) {
-//            Log.i(getClass().getName(), "word.getText(): " + word.getText() + " (" + word.getUsageCount() + ")");
-//        }
+        List<Word> wordsStartingWithUnlockedLetterSound = wordDao.queryRaw(query);
+        Log.i(getClass().getName(), "wordsStartingWithUnlockedLetterSound.size(): " + wordsStartingWithUnlockedLetterSound.size());
+        for (Word word : wordsStartingWithUnlockedLetterSound) {
+            Log.i(getClass().getName(), "word.getText(): " + word.getText() + ", word.getPhonetics(): " + word.getPhonetics() + ", word.getUsageCount(): " + word.getUsageCount());
+        }
 
         // Fetch 10 most frequent words with a corresponding image
         wordsWithImage = new ArrayList<>();
-        for (Word word : wordsStartingWithUnlockedLetter) {
+        for (Word word : wordsStartingWithUnlockedLetterSound) {
+            Log.i(getClass().getName(), "word.getPhonetics(): " + word.getPhonetics());
+
             Audio matchingAudio = ContentProvider.getAudio(word.getText());
             Image matchingImage = ContentProvider.getImage(word.getText());
             // TODO: add audio as requirement
@@ -182,24 +194,14 @@ public class OnsetSoundActivity extends AppCompatActivity {
         alt1CardView.postDelayed(new Runnable() {
             @Override
             public void run() {
-//                TtsHelper.speak(getApplicationContext(), getString(R.string.which_word_begins_with_this_sound));
                 MediaPlayerHelper.play(getApplicationContext(), R.raw.which_word_begins_with_this_sound);
 
                 Log.i(getClass().getName(), "alt1Word.getPhonetics(): /" + alt1Word.getPhonetics() + "/");
 
-                // TODO: fetch Allophone instead of String
-//                final String allophoneIpa = alt1Word.getPhonetics().substring(0, 1);
-                // Temporary hack to handle /ɑ/
-                final String allophoneIpa = ("sw".equals(Locale.getDefault().getLanguage()) && alt1Word.getText().startsWith("a"))
-                        ? "a"
-                        : alt1Word.getPhonetics().substring(0, 1);
+                final String allophoneIpa = alt1Word.getPhonetics().substring(0, 1); // TODO: Handle case where Letter consists of more than 1 Allophone (e.g. /ks/)
                 Log.i(getClass().getName(), "allophoneIpa: " + allophoneIpa);
 
-//                final String androidResourceName = IpaToAndroidResourceConverter.getAndroidResourceName(allophoneIpa);
-                // Temporary hack to handle /ɑ/
-                final String androidResourceName = ("sw".equals(Locale.getDefault().getLanguage()) && alt1Word.getText().startsWith("a"))
-                        ? "a2"
-                        : IpaToAndroidResourceConverter.getAndroidResourceName(allophoneIpa);
+                final String androidResourceName = IpaToAndroidResourceConverter.getAndroidResourceName(allophoneIpa);
                 Log.i(getClass().getName(), "androidResourceName: " + androidResourceName);
 
                 int pauseBeforePlayingSound = 2500;
@@ -359,8 +361,8 @@ public class OnsetSoundActivity extends AppCompatActivity {
         Log.i(getClass().getName(), "playSound");
 
         // Look up corresponding Audio
-        Log.d(getClass().getName(), "Looking up \"letter_sound_" + ipaValue + "\"");
-        Audio audio = ContentProvider.getAudio("letter_sound_" + ipaValue);
+        Log.d(getClass().getName(), "Looking up \"allophone_" + ipaValue + "\"");
+        Audio audio = ContentProvider.getAudio("allophone_" + ipaValue);
         Log.i(getClass().getName(), "audio: " + audio);
         if (audio != null) {
             // Play audio
@@ -377,7 +379,7 @@ public class OnsetSoundActivity extends AppCompatActivity {
             mediaPlayer.start();
         } else {
             // Audio not found. Fall-back to application resource.
-            String audioFileName = "letter_sound_" + ipaValue;
+            String audioFileName = "allophone_" + ipaValue;
             int resourceId = getResources().getIdentifier(audioFileName, "raw", getPackageName());
             try {
                 if (resourceId != 0) {
