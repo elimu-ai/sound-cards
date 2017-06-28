@@ -110,9 +110,10 @@ public class OnsetSoundActivity extends AppCompatActivity {
             Log.i(getClass().getName(), "word.getPhonetics(): " + word.getPhonetics());
 
             Audio matchingAudio = ContentProvider.getAudio(word.getText());
-            Image matchingImage = ContentProvider.getImage(word.getText());
+            List<Image> matchingImages = ContentProvider.getAllImagesLabeledByWord(word);
+
             // TODO: add audio as requirement
-            if (/*(matchingAudio != null) &&*/ (matchingImage != null)) {
+            if (/*(matchingAudio != null) &&*/ !matchingImages.isEmpty()) {
                 Log.i(getClass().getName(), "Adding \"" + word.getText() + "\"...");
                 wordsWithImage.add(word);
             }
@@ -155,7 +156,8 @@ public class OnsetSoundActivity extends AppCompatActivity {
         final Word alt1Word = wordsWithImage.get(wordsCorrectlySelected.size());
         Log.i(getClass().getName(), "alt1Word.getText(): " + alt1Word.getText());
 
-        final Image alt1Image = ContentProvider.getImage(alt1Word.getText());
+        List<Image> alt1Images = ContentProvider.getAllImagesLabeledByWord(alt1Word);
+        final Image alt1Image = alt1Images.get((int) (Math.random() * alt1Images.size()));
         File alt1ImageFile = MultimediaHelper.getFile(alt1Image);
         Bitmap alt1ImageBitmap = BitmapFactory.decodeFile(alt1ImageFile.getAbsolutePath());
         final String alt1ImageDominantColor = alt1Image.getDominantColor();
@@ -167,7 +169,8 @@ public class OnsetSoundActivity extends AppCompatActivity {
         final Word alt2Word = otherWords.get((int) (Math.random() * otherWords.size()));
         Log.i(getClass().getName(), "alt2Word.getText(): " + alt2Word.getText());
 
-        Image alt2Image = ContentProvider.getImage(alt2Word.getText());
+        List<Image> alt2Images = ContentProvider.getAllImagesLabeledByWord(alt2Word);
+        final Image alt2Image = alt2Images.get((int) (Math.random() * alt2Images.size()));
         File alt2ImageFile = MultimediaHelper.getFile(alt2Image);
         Bitmap alt2ImageBitmap = BitmapFactory.decodeFile(alt2ImageFile.getAbsolutePath());
         final String alt2ImageDominantColor = alt2Image.getDominantColor();
