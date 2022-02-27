@@ -20,6 +20,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import ai.elimu.model.v2.gson.content.AudioGson;
 import ai.elimu.model.v2.gson.content.LetterGson;
 import ai.elimu.model.v2.gson.content.SoundGson;
 import ai.elimu.model.v2.gson.content.WordGson;
@@ -104,7 +105,7 @@ public class OnsetSoundActivity extends AppCompatActivity {
         for (WordGson word : wordsStartingWithUnlockedLetterSound) {
             Log.i(getClass().getName(), "word.getPhonetics(): " + word.getPhonetics());
 
-            Audio matchingAudio = ContentProvider.getAudio(word.getText());
+            AudioGson matchingAudio = ContentProvider.getAudio(word.getText());
             List<Image> matchingImages = ContentProvider.getAllImagesLabeledByWord(word);
 
             // TODO: add audio as requirement
@@ -398,7 +399,7 @@ public class OnsetSoundActivity extends AppCompatActivity {
 
         // Look up corresponding Audio recording
         Log.d(getClass().getName(), "Looking up \"" + word.getText() + "\"");
-        Audio audio = ContentProvider.getAudio(word.getText());
+        AudioGson audio = ContentProvider.getAudio(word.getText());
         Log.i(getClass().getName(), "audio: " + audio);
         if (audio != null) {
             // Play audio
