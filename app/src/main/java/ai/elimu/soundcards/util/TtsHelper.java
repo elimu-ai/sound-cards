@@ -1,10 +1,10 @@
-package org.literacyapp.soundcards.util;
+package ai.elimu.soundcards.util;
 
 import android.content.Context;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 
-import org.literacyapp.soundcards.SoundCardApplication;
+import ai.elimu.soundcards.SoundCardApplication;
 
 public class TtsHelper {
 

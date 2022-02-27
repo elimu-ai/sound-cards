@@ -1,4 +1,4 @@
-package org.literacyapp.soundcards.util;
+package ai.elimu.soundcards.util;
 
 /**
  * Helper class for converting IPA values into a format allowed in an Android file name: [a-z], [0-9], [_]

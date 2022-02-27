@@ -1,4 +1,4 @@
-package org.literacyapp.soundcards.util;
+package ai.elimu.soundcards.util;
 
 import android.content.Context;
 import android.media.MediaPlayer;

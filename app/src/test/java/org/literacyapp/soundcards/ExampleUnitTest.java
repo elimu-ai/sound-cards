@@ -1,4 +1,4 @@
-package org.literacyapp.soundcards;
+package ai.elimu.soundcards;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package org.literacyapp.soundcards;
+package ai.elimu.soundcards;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("org.literacyapp.imagepicker", appContext.getPackageName());
+        assertEquals("ai.elimu.imagepicker", appContext.getPackageName());
     }
 }

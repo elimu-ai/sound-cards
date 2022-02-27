@@ -1,4 +1,4 @@
-package org.literacyapp.soundcards;
+package ai.elimu.soundcards;
 
 import android.Manifest;
 import android.content.Intent;
@@ -9,8 +9,8 @@ import android.support.v4.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 
-import org.literacyapp.contentprovider.ContentProvider;
-import org.literacyapp.soundcards.task.OnsetSoundActivity;
+import ai.elimu.contentprovider.ContentProvider;
+import ai.elimu.soundcards.task.OnsetSoundActivity;
 
 public class MainActivity extends AppCompatActivity {
 

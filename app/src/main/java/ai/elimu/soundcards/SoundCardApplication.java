@@ -1,4 +1,4 @@
-package org.literacyapp.soundcards;
+package ai.elimu.soundcards;
 
 import android.app.Application;
 import android.speech.tts.TextToSpeech;

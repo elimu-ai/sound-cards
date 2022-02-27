@@ -1,4 +1,4 @@
-package org.literacyapp.soundcards.task;
+package ai.elimu.soundcards.task;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -20,18 +20,18 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import org.literacyapp.contentprovider.ContentProvider;
-import org.literacyapp.contentprovider.dao.WordDao;
-import org.literacyapp.contentprovider.model.content.Allophone;
-import org.literacyapp.contentprovider.model.content.Letter;
-import org.literacyapp.contentprovider.model.content.Word;
-import org.literacyapp.contentprovider.model.content.multimedia.Audio;
-import org.literacyapp.contentprovider.model.content.multimedia.Image;
-import org.literacyapp.contentprovider.util.MultimediaHelper;
-import org.literacyapp.soundcards.R;
-import org.literacyapp.soundcards.util.IpaToAndroidResourceConverter;
-import org.literacyapp.soundcards.util.MediaPlayerHelper;
-import org.literacyapp.soundcards.util.TtsHelper;
+import ai.elimu.contentprovider.ContentProvider;
+import ai.elimu.contentprovider.dao.WordDao;
+import ai.elimu.contentprovider.model.content.Allophone;
+import ai.elimu.contentprovider.model.content.Letter;
+import ai.elimu.contentprovider.model.content.Word;
+import ai.elimu.contentprovider.model.content.multimedia.Audio;
+import ai.elimu.contentprovider.model.content.multimedia.Image;
+import ai.elimu.contentprovider.util.MultimediaHelper;
+import ai.elimu.soundcards.R;
+import ai.elimu.soundcards.util.IpaToAndroidResourceConverter;
+import ai.elimu.soundcards.util.MediaPlayerHelper;
+import ai.elimu.soundcards.util.TtsHelper;
 
 import java.io.File;
 import java.util.ArrayList;
