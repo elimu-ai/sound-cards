@@ -20,14 +20,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import ai.elimu.contentprovider.ContentProvider;
-import ai.elimu.contentprovider.dao.WordDao;
-import ai.elimu.contentprovider.model.content.Allophone;
-import ai.elimu.contentprovider.model.content.Letter;
-import ai.elimu.contentprovider.model.content.Word;
-import ai.elimu.contentprovider.model.content.multimedia.Audio;
-import ai.elimu.contentprovider.model.content.multimedia.Image;
-import ai.elimu.contentprovider.util.MultimediaHelper;
+import ai.elimu.model.v2.gson.content.WordGson;
 import ai.elimu.soundcards.R;
 import ai.elimu.soundcards.util.IpaToAndroidResourceConverter;
 import ai.elimu.soundcards.util.MediaPlayerHelper;
@@ -42,9 +35,9 @@ import java.util.regex.Pattern;
 
 public class OnsetSoundActivity extends AppCompatActivity {
 
-    private List<Word> wordsWithImage;
+    private List<WordGson> wordsWithImage;
 
-    private List<Word> wordsCorrectlySelected;
+    private List<WordGson> wordsCorrectlySelected;
 
     private ImageView emojiImageView;
 
@@ -98,15 +91,15 @@ public class OnsetSoundActivity extends AppCompatActivity {
         }
         query += " ORDER BY T.USAGE_COUNT DESC";
         Log.i(getClass().getName(), "query: " + query);
-        List<Word> wordsStartingWithUnlockedLetterSound = wordDao.queryRaw(query);
+        List<WordGson> wordsStartingWithUnlockedLetterSound = wordDao.queryRaw(query);
         Log.i(getClass().getName(), "wordsStartingWithUnlockedLetterSound.size(): " + wordsStartingWithUnlockedLetterSound.size());
-        for (Word word : wordsStartingWithUnlockedLetterSound) {
+        for (WordGson word : wordsStartingWithUnlockedLetterSound) {
             Log.i(getClass().getName(), "word.getText(): " + word.getText() + ", word.getPhonetics(): " + word.getPhonetics() + ", word.getUsageCount(): " + word.getUsageCount());
         }
 
         // Fetch 10 most frequent words with a corresponding image
         wordsWithImage = new ArrayList<>();
-        for (Word word : wordsStartingWithUnlockedLetterSound) {
+        for (WordGson word : wordsStartingWithUnlockedLetterSound) {
             Log.i(getClass().getName(), "word.getPhonetics(): " + word.getPhonetics());
 
             Audio matchingAudio = ContentProvider.getAudio(word.getText());
@@ -153,7 +146,7 @@ public class OnsetSoundActivity extends AppCompatActivity {
         objectAnimator.setDuration(1000);
         objectAnimator.start();
 
-        final Word alt1Word = wordsWithImage.get(wordsCorrectlySelected.size());
+        final WordGson alt1Word = wordsWithImage.get(wordsCorrectlySelected.size());
         Log.i(getClass().getName(), "alt1Word.getText(): " + alt1Word.getText());
 
         List<Image> alt1Images = ContentProvider.getAllImagesLabeledByWord(alt1Word);
@@ -164,9 +157,9 @@ public class OnsetSoundActivity extends AppCompatActivity {
         final int alt1ColorIdentifier = parseRgbColor(alt1ImageDominantColor, 20);
 
         // TODO: fetch words with different onset sound
-        List<Word> otherWords = new ArrayList<>(wordsWithImage);
+        List<WordGson> otherWords = new ArrayList<>(wordsWithImage);
         otherWords.remove(alt1Word);
-        final Word alt2Word = otherWords.get((int) (Math.random() * otherWords.size()));
+        final WordGson alt2Word = otherWords.get((int) (Math.random() * otherWords.size()));
         Log.i(getClass().getName(), "alt2Word.getText(): " + alt2Word.getText());
 
         List<Image> alt2Images = ContentProvider.getAllImagesLabeledByWord(alt2Word);
@@ -398,7 +391,7 @@ public class OnsetSoundActivity extends AppCompatActivity {
         }
     }
 
-    private void playWord(Word word) {
+    private void playWord(WordGson word) {
         Log.i(getClass().getName(), "playWord");
 
         // Look up corresponding Audio recording
