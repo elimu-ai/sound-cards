@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("ai.elimu.imagepicker", appContext.getPackageName());
+        assertEquals("ai.elimu.soundcards", appContext.getPackageName());
     }
 }
