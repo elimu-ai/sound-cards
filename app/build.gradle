@@ -1,49 +1,60 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    compileSdkVersion 31
 
     defaultConfig {
         applicationId "org.literacyapp.soundcards"
-        minSdkVersion 21
-        targetSdkVersion 23
-        versionCode 1000003
-        versionName "1.0.3"
+        minSdkVersion 24
+        targetSdkVersion 31
+        versionCode 2000000
+        versionName "2.0.0-SNAPSHOT"
+        setProperty("archivesBaseName", "${applicationId}-${versionCode}")
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-debug"
+            manifestPlaceholders = [contentProviderApplicationId: "ai.elimu.content_provider.debug"]
+            buildConfigField("String", "CONTENT_PROVIDER_APPLICATION_ID", '"ai.elimu.content_provider.debug"')
+            buildConfigField("String", "ANALYTICS_APPLICATION_ID", '"ai.elimu.analytics.debug"')
+        }
+        qa_test {
+            initWith debug
+            applicationIdSuffix ".test"
+            versionNameSuffix "-test"
+            manifestPlaceholders = [contentProviderApplicationId: "ai.elimu.content_provider.test"]
+            buildConfigField("String", "CONTENT_PROVIDER_APPLICATION_ID", '"ai.elimu.content_provider.test"')
+            buildConfigField("String", "ANALYTICS_APPLICATION_ID", '"ai.elimu.analytics.test"')
+        }
         release {
             minifyEnabled false
+            manifestPlaceholders = [contentProviderApplicationId: "ai.elimu.content_provider"]
+            buildConfigField("String", "CONTENT_PROVIDER_APPLICATION_ID", '"ai.elimu.content_provider"')
+            buildConfigField("String", "ANALYTICS_APPLICATION_ID", '"ai.elimu.analytics"')
         }
     }
 
-    lintOptions {
-        abortOnError false
-    }
-}
-
-repositories {
-    mavenLocal()
-    maven {
-        url "http://archiva.educativo.eu:8081/repository/internal/"
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    testCompile 'junit:junit:4.12'
+    implementation 'com.github.elimu-ai:model:model-2.0.53' // See https://jitpack.io/#elimu-ai/model
+    implementation 'com.github.elimu-ai:content-provider:1.2.8@aar' // See https://jitpack.io/#elimu-ai/content-provider
+    implementation 'com.github.elimu-ai:analytics:3.1.11@aar' // See https://jitpack.io/#elimu-ai/analytics
 
-    compile 'org.literacyapp:literacyapp-model:1.1.56'
-    compile 'org.literacyapp:contentprovider:1.1.1'
-    compile 'org.greenrobot:greendao:3.2.0'
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'com.google.android.material:material:1.5.0'
 
-    compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'com.android.support:cardview-v7:23.4.0'
-    compile 'com.android.support:support-v4:23.4.0'
+    testImplementation 'junit:junit:4.13.2'
+
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 }
