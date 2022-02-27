@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import ai.elimu.model.v2.gson.content.LetterGson;
+import ai.elimu.model.v2.gson.content.SoundGson;
 import ai.elimu.model.v2.gson.content.WordGson;
 import ai.elimu.soundcards.R;
 import ai.elimu.soundcards.util.IpaToAndroidResourceConverter;
@@ -71,19 +72,19 @@ public class OnsetSoundActivity extends AppCompatActivity {
 
         // Fetch words starting with the sound of one of the unlocked letters
         List<LetterGson> unlockedLetters = ContentProvider.getUnlockedLetters();
-        List<String> allophoneStrings = new ArrayList<>();
+        List<String> soundStrings = new ArrayList<>();
         for (LetterGson unlockedLetter : unlockedLetters) {
-            String allophoneAsString = "";
-            for (Allophone allophone : unlockedLetter.getAllophones()) {
-                allophoneAsString += allophone.getValueIpa();
+            String soundAsString = "";
+            for (SoundGson sound : unlockedLetter.getSounds()) {
+                soundAsString += sound.getValueIpa();
             }
-            allophoneStrings.add(allophoneAsString);
+            soundStrings.add(soundAsString);
         }
-        Log.i(getClass().getName(), "allophoneStrings: " + allophoneStrings);
+        Log.i(getClass().getName(), "soundStrings: " + soundStrings);
         WordDao wordDao = ContentProvider.getDaoSession().getWordDao();
         String query = ""; // See http://greenrobot.org/greendao/documentation/queries/#Raw_queries
-        for (int i = 0; i < allophoneStrings.size(); i++) {
-            String unlockedLetterSound = allophoneStrings.get(i);
+        for (int i = 0; i < soundStrings.size(); i++) {
+            String unlockedLetterSound = soundStrings.get(i);
             if (i == 0) {
                 query = "WHERE T.PHONETICS LIKE \"" + unlockedLetterSound + "%\"";
             } else {
@@ -195,10 +196,10 @@ public class OnsetSoundActivity extends AppCompatActivity {
 
                 Log.i(getClass().getName(), "alt1Word.getPhonetics(): /" + alt1Word.getPhonetics() + "/");
 
-                final String allophoneIpa = alt1Word.getPhonetics().substring(0, 1); // TODO: Handle case where Letter consists of more than 1 Allophone (e.g. /ks/)
-                Log.i(getClass().getName(), "allophoneIpa: " + allophoneIpa);
+                final String soundIpa = alt1Word.getPhonetics().substring(0, 1); // TODO: Handle case where Letter consists of more than 1 Sound (e.g. /ks/)
+                Log.i(getClass().getName(), "soundIpa: " + soundIpa);
 
-                final String androidResourceName = IpaToAndroidResourceConverter.getAndroidResourceName(allophoneIpa);
+                final String androidResourceName = IpaToAndroidResourceConverter.getAndroidResourceName(soundIpa);
                 Log.i(getClass().getName(), "androidResourceName: " + androidResourceName);
 
                 int pauseBeforePlayingSound = 2500;
@@ -208,7 +209,7 @@ public class OnsetSoundActivity extends AppCompatActivity {
                 alt1CardView.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        playSound(allophoneIpa);
+                        playSound(soundIpa);
 
                         Log.i(getClass().getName(), "Looking up resource: animated_emoji_u1f603_mouth_" + androidResourceName);
                         int drawableResourceId = getResources().getIdentifier("animated_emoji_u1f603_mouth_" + androidResourceName, "drawable", getPackageName());
@@ -358,8 +359,8 @@ public class OnsetSoundActivity extends AppCompatActivity {
         Log.i(getClass().getName(), "playSound");
 
         // Look up corresponding Audio
-        Log.d(getClass().getName(), "Looking up \"allophone_" + ipaValue + "\"");
-        Audio audio = ContentProvider.getAudio("allophone_" + ipaValue);
+        Log.d(getClass().getName(), "Looking up \"sound_" + ipaValue + "\"");
+        Audio audio = ContentProvider.getAudio("sound_" + ipaValue);
         Log.i(getClass().getName(), "audio: " + audio);
         if (audio != null) {
             // Play audio
@@ -376,7 +377,7 @@ public class OnsetSoundActivity extends AppCompatActivity {
             mediaPlayer.start();
         } else {
             // Audio not found. Fall-back to application resource.
-            String audioFileName = "allophone_" + ipaValue;
+            String audioFileName = "sound_" + ipaValue;
             int resourceId = getResources().getIdentifier(audioFileName, "raw", getPackageName());
             try {
                 if (resourceId != 0) {
