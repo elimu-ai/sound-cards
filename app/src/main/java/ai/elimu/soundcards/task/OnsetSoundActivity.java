@@ -20,6 +20,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import ai.elimu.model.v2.gson.content.LetterGson;
 import ai.elimu.model.v2.gson.content.WordGson;
 import ai.elimu.soundcards.R;
 import ai.elimu.soundcards.util.IpaToAndroidResourceConverter;
@@ -69,9 +70,9 @@ public class OnsetSoundActivity extends AppCompatActivity {
         alt2ImageView = (ImageView) findViewById(R.id.alt2ImageView);
 
         // Fetch words starting with the sound of one of the unlocked letters
-        List<Letter> unlockedLetters = ContentProvider.getUnlockedLetters();
+        List<LetterGson> unlockedLetters = ContentProvider.getUnlockedLetters();
         List<String> allophoneStrings = new ArrayList<>();
-        for (Letter unlockedLetter : unlockedLetters) {
+        for (LetterGson unlockedLetter : unlockedLetters) {
             String allophoneAsString = "";
             for (Allophone allophone : unlockedLetter.getAllophones()) {
                 allophoneAsString += allophone.getValueIpa();
