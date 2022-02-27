@@ -1,4 +1,4 @@
-# Sound Cards
+# Sound Cards 🎶
 
 Android application for teaching and assessing phonemic awareness
 
