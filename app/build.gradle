@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 31
+    compileSdk 35
 
     defaultConfig {
         applicationId "ai.elimu.soundcards"
-        minSdkVersion 24
-        targetSdkVersion 31
+        minSdkVersion 26
+        targetSdkVersion 35
         versionCode 2000001
         versionName "2.0.1-SNAPSHOT"
         setProperty("archivesBaseName", "${applicationId}-${versionCode}")
@@ -38,8 +38,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     namespace 'ai.elimu.soundcards'
 }
