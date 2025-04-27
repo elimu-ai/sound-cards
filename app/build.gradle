@@ -10,7 +10,7 @@ android {
         versionCode 2000002
         versionName "2.0.2-SNAPSHOT"
         setProperty("archivesBaseName", "${applicationId}-${versionCode}")
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
