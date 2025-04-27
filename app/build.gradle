@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
+    namespace 'ai.elimu.soundcards'
     compileSdk 35
 
     defaultConfig {
@@ -33,7 +34,6 @@ android {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
-    namespace 'ai.elimu.soundcards'
 }
 
 dependencies {
