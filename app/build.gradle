@@ -39,7 +39,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'ai.elimu:model:model-2.0.97' // https://jitpack.io/#ai.elimu/model
+    implementation 'ai.elimu:model:model-2.0.102' // https://jitpack.io/#ai.elimu/model
     implementation 'ai.elimu:content-provider:1.2.38@aar' // https://jitpack.io/#ai.elimu/content-provider
     implementation 'ai.elimu:analytics:3.1.30@aar' // https://jitpack.io/#ai.elimu/analytics
 
