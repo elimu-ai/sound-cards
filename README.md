@@ -4,6 +4,9 @@
 
 Android application for teaching and assessing phonemic awareness
 
+Literacy skills:
+* [`PHONEMIC_AWARENESS`](https://github.com/elimu-ai/wiki/blob/main/literacy-skills/PHONEMIC_AWARENESS.md)
+
 <img width=480 src="https://cloud.githubusercontent.com/assets/15718174/26796195/da057c0c-4a28-11e7-807b-1325f200883a.png" />
 
 See demo at https://www.youtube.com/watch?v=PQV8AvcU_3c
@@ -19,7 +22,7 @@ See demo at https://www.youtube.com/watch?v=PQV8AvcU_3c
   <img src="https://github.com/elimu-ai/webapp/blob/main/src/main/webapp/static/img/logo-text-256x78.png" />
 </p>
 <p align="center">
-  elimu.ai - Free open-source learning software for out-of-school children ✨🚀
+  elimu.ai - Free open-source learning software for out-of-school children 🚀✨
 </p>
 <p align="center">
   <a href="https://elimu.ai">Website 🌐</a>
