@@ -1,5 +1,3 @@
-[![](https://jitpack.io/v/ai.elimu/sound-cards.svg)](https://jitpack.io/#ai.elimu/sound-cards)
-
 # Sound Cards 🎶
 
 Android application for teaching and assessing phonemic awareness
