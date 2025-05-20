@@ -17,7 +17,7 @@ class SoundCardApplication : Application() {
         tts = TextToSpeech(applicationContext, object : OnInitListener {
             override fun onInit(status: Int) {
                 Log.i(javaClass.getName(), "TextToSpeech onInit")
-                Log.i(javaClass.getName(), "TextToSpeech status: " + status)
+                Log.i(javaClass.getName(), "TextToSpeech status: $status")
             }
         })
     }

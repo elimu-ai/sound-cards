@@ -9,7 +9,7 @@ object TtsHelper {
     fun speak(context: Context?, text: String?) {
         Log.i(TtsHelper::class.java.getName(), "speak")
 
-        Log.i(TtsHelper::class.java.getName(), "text: " + text)
+        Log.i(TtsHelper::class.java.getName(), "text: $text")
 
         val application = context as SoundCardApplication
         val tts = application.tts
