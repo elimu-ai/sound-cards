@@ -15,6 +15,8 @@ import androidx.cardview.widget.CardView
 import java.util.regex.Pattern
 
 class OnsetSoundActivity : AppCompatActivity() {
+    
+    private val TAG = "OnsetSoundActivity"
     private val wordsWithImage: MutableList<WordGson?>? = null
 
     private var wordsCorrectlySelected: MutableList<WordGson?>? = null
@@ -30,7 +32,7 @@ class OnsetSoundActivity : AppCompatActivity() {
     private var alt2ImageView: ImageView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.i(javaClass.getName(), "onCreate")
+        Log.i(TAG, "onCreate")
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_onset_sound)
@@ -55,7 +57,7 @@ class OnsetSoundActivity : AppCompatActivity() {
     }
 
     override fun onStart() {
-        Log.i(javaClass.getName(), "onStart")
+        Log.i(TAG, "onStart")
         super.onStart()
 
         // Animate subtle head movements
@@ -69,7 +71,7 @@ class OnsetSoundActivity : AppCompatActivity() {
     }
 
     private fun loadNextTask() {
-        Log.i(javaClass.getName(), "loadNextTask")
+        Log.i(TAG, "loadNextTask")
 
         // TODO
     }
@@ -89,18 +91,18 @@ class OnsetSoundActivity : AppCompatActivity() {
     }
 
     private fun playSound(ipaValue: String?) {
-        Log.i(javaClass.getName(), "playSound")
+        Log.i(TAG, "playSound")
 
         // Look up corresponding Audio
-        Log.d(javaClass.getName(), "Looking up \"sound_$ipaValue\"")
+        Log.d(TAG, "Looking up \"sound_$ipaValue\"")
         // TODO
     }
 
     private fun playWord(word: WordGson) {
-        Log.i(javaClass.getName(), "playWord")
+        Log.i(TAG, "playWord")
 
         // Look up corresponding Audio recording
-        Log.d(javaClass.getName(), "Looking up \"" + word.text + "\"")
+        Log.d(TAG, "Looking up \"" + word.text + "\"")
         // TODO
     }
 }
