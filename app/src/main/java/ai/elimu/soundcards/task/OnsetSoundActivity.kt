@@ -61,8 +61,8 @@ class OnsetSoundActivity : AppCompatActivity() {
         // Animate subtle head movements
         val objectAnimator = ObjectAnimator.ofFloat(emojiImageView, "rotation", 2f)
         objectAnimator.setDuration(1000)
-        objectAnimator.setRepeatCount(ValueAnimator.INFINITE)
-        objectAnimator.setRepeatMode(ValueAnimator.REVERSE)
+        objectAnimator.repeatCount = ValueAnimator.INFINITE
+        objectAnimator.repeatMode = ValueAnimator.REVERSE
         objectAnimator.start()
 
         loadNextTask()
@@ -100,7 +100,7 @@ class OnsetSoundActivity : AppCompatActivity() {
         Log.i(javaClass.getName(), "playWord")
 
         // Look up corresponding Audio recording
-        Log.d(javaClass.getName(), "Looking up \"" + word.getText() + "\"")
+        Log.d(javaClass.getName(), "Looking up \"" + word.text + "\"")
         // TODO
     }
 }
