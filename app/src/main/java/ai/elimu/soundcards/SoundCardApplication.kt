@@ -1,29 +1,24 @@
-package ai.elimu.soundcards;
+package ai.elimu.soundcards
 
-import android.app.Application;
-import android.speech.tts.TextToSpeech;
-import android.util.Log;
+import android.app.Application
+import android.speech.tts.TextToSpeech
+import android.speech.tts.TextToSpeech.OnInitListener
+import android.util.Log
 
-public class SoundCardApplication extends Application {
+class SoundCardApplication : Application() {
+    var tts: TextToSpeech? = null
+        private set
 
-    private TextToSpeech tts;
-
-    @Override
-    public void onCreate() {
-        Log.i(getClass().getName(), "onCreate");
-        super.onCreate();
+    override fun onCreate() {
+        Log.i(javaClass.getName(), "onCreate")
+        super.onCreate()
 
         // Initialize TTS
-        tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                Log.i(getClass().getName(), "TextToSpeech onInit");
-                Log.i(getClass().getName(), "TextToSpeech status: " + status);
+        tts = TextToSpeech(getApplicationContext(), object : OnInitListener {
+            override fun onInit(status: Int) {
+                Log.i(javaClass.getName(), "TextToSpeech onInit")
+                Log.i(javaClass.getName(), "TextToSpeech status: " + status)
             }
-        });
-    }
-
-    public TextToSpeech getTts() {
-        return tts;
+        })
     }
 }
