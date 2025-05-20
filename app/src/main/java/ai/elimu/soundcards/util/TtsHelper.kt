@@ -6,10 +6,13 @@ import android.speech.tts.TextToSpeech
 import android.util.Log
 
 object TtsHelper {
+    
+    private const val TAG = "TtsHelper"
+    
     fun speak(context: Context?, text: String?) {
-        Log.i(TtsHelper::class.java.getName(), "speak")
+        Log.i(TAG, "speak")
 
-        Log.i(TtsHelper::class.java.getName(), "text: $text")
+        Log.i(TAG, "text: $text")
 
         val application = context as SoundCardApplication
         val tts = application.tts
