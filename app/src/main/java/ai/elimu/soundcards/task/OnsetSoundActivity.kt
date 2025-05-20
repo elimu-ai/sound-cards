@@ -92,7 +92,7 @@ class OnsetSoundActivity : AppCompatActivity() {
         Log.i(javaClass.getName(), "playSound")
 
         // Look up corresponding Audio
-        Log.d(javaClass.getName(), "Looking up \"sound_" + ipaValue + "\"")
+        Log.d(javaClass.getName(), "Looking up \"sound_$ipaValue\"")
         // TODO
     }
 
