@@ -1,3 +1,6 @@
+plugins {
+    alias(libs.plugins.kotlin.android)
+}
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -11,8 +14,8 @@ android {
     defaultConfig {
         minSdkVersion 26
         targetSdkVersion 35
-        versionCode 2001013
-        versionName "2.1.13-SNAPSHOT"
+        versionCode 2001012
+        versionName "2.1.12-SNAPSHOT"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -36,6 +39,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
+    kotlinOptions {
+        jvmTarget = '17'
+    }
 }
 
 dependencies {
@@ -44,6 +50,7 @@ dependencies {
     implementation libs.elimu.content.provider // https://jitpack.io/#ai.elimu/content-provider
 
     implementation libs.material
+    implementation libs.androidx.core.ktx
 
     testImplementation libs.junit
 
