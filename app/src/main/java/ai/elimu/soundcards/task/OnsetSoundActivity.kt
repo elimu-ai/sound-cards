@@ -1,61 +1,51 @@
-package ai.elimu.soundcards.task;
+package ai.elimu.soundcards.task
 
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
+import ai.elimu.model.v2.gson.content.WordGson
+import ai.elimu.soundcards.R
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
+import android.graphics.Color
+import android.os.Bundle
+import android.util.Log
+import android.view.View
+import android.widget.ImageView
+import android.widget.ProgressBar
+import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
+import java.util.regex.Pattern
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
+class OnsetSoundActivity : AppCompatActivity() {
+    private val wordsWithImage: MutableList<WordGson?>? = null
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+    private var wordsCorrectlySelected: MutableList<WordGson?>? = null
 
-import ai.elimu.model.v2.gson.content.WordGson;
-import ai.elimu.soundcards.R;
-import ai.elimu.soundcards.util.MediaPlayerHelper;
+    private var emojiImageView: ImageView? = null
 
-public class OnsetSoundActivity extends AppCompatActivity {
+    private var progressBar: ProgressBar? = null
 
-    private List<WordGson> wordsWithImage;
+    private var alt1CardView: CardView? = null
+    private var alt1ImageView: ImageView? = null
 
-    private List<WordGson> wordsCorrectlySelected;
+    private var alt2CardView: CardView? = null
+    private var alt2ImageView: ImageView? = null
 
-    private ImageView emojiImageView;
+    override fun onCreate(savedInstanceState: Bundle?) {
+        Log.i(javaClass.getName(), "onCreate")
+        super.onCreate(savedInstanceState)
 
-    private ProgressBar progressBar;
+        setContentView(R.layout.activity_onset_sound)
 
-    private CardView alt1CardView;
-    private ImageView alt1ImageView;
+        wordsCorrectlySelected = ArrayList<WordGson?>()
 
-    private CardView alt2CardView;
-    private ImageView alt2ImageView;
+        emojiImageView = findViewById<View?>(R.id.emoji) as ImageView?
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        Log.i(getClass().getName(), "onCreate");
-        super.onCreate(savedInstanceState);
+        progressBar = findViewById<View?>(R.id.progressBar) as ProgressBar?
 
-        setContentView(R.layout.activity_onset_sound);
+        alt1CardView = findViewById<View?>(R.id.alt1CardView) as CardView?
+        alt1ImageView = findViewById<View?>(R.id.alt1ImageView) as ImageView?
 
-        wordsCorrectlySelected = new ArrayList<>();
-
-        emojiImageView = (ImageView) findViewById(R.id.emoji);
-
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
-
-        alt1CardView = (CardView) findViewById(R.id.alt1CardView);
-        alt1ImageView = (ImageView) findViewById(R.id.alt1ImageView);
-
-        alt2CardView = (CardView) findViewById(R.id.alt2CardView);
-        alt2ImageView = (ImageView) findViewById(R.id.alt2ImageView);
+        alt2CardView = findViewById<View?>(R.id.alt2CardView) as CardView?
+        alt2ImageView = findViewById<View?>(R.id.alt2ImageView) as ImageView?
 
         // Fetch words starting with one of the unlocked letter-sound correspondences
         // TODO
@@ -64,54 +54,53 @@ public class OnsetSoundActivity extends AppCompatActivity {
         // TODO
     }
 
-    @Override
-    protected void onStart() {
-        Log.i(getClass().getName(), "onStart");
-        super.onStart();
+    override fun onStart() {
+        Log.i(javaClass.getName(), "onStart")
+        super.onStart()
 
         // Animate subtle head movements
-        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(emojiImageView, "rotation", 2);
-        objectAnimator.setDuration(1000);
-        objectAnimator.setRepeatCount(ValueAnimator.INFINITE);
-        objectAnimator.setRepeatMode(ValueAnimator.REVERSE);
-        objectAnimator.start();
+        val objectAnimator = ObjectAnimator.ofFloat(emojiImageView, "rotation", 2f)
+        objectAnimator.setDuration(1000)
+        objectAnimator.setRepeatCount(ValueAnimator.INFINITE)
+        objectAnimator.setRepeatMode(ValueAnimator.REVERSE)
+        objectAnimator.start()
 
-        loadNextTask();
+        loadNextTask()
     }
 
-    private void loadNextTask() {
-        Log.i(getClass().getName(), "loadNextTask");
+    private fun loadNextTask() {
+        Log.i(javaClass.getName(), "loadNextTask")
 
         // TODO
     }
 
-    private int parseRgbColor(String input, int alpha) {
-        Pattern pattern = Pattern.compile("rgb *\\( *([0-9]+), *([0-9]+), *([0-9]+) *\\)");
-        Matcher matcher = pattern.matcher(input);
+    private fun parseRgbColor(input: String, alpha: Int): Int {
+        val pattern = Pattern.compile("rgb *\\( *([0-9]+), *([0-9]+), *([0-9]+) *\\)")
+        val matcher = pattern.matcher(input)
         if (matcher.matches()) {
-            int rgbRed = Integer.valueOf(matcher.group(1));
-            int rgbGreen = Integer.valueOf(matcher.group(2));
-            int rgbBlue = Integer.valueOf(matcher.group(3));
-            int colorIdentifier = Color.argb(alpha, rgbRed, rgbGreen, rgbBlue);
-            return colorIdentifier;
+            val rgbRed = matcher.group(1).toInt()
+            val rgbGreen = matcher.group(2).toInt()
+            val rgbBlue = matcher.group(3).toInt()
+            val colorIdentifier = Color.argb(alpha, rgbRed, rgbGreen, rgbBlue)
+            return colorIdentifier
         } else {
-            return -1;
+            return -1
         }
     }
 
-    private void playSound(String ipaValue) {
-        Log.i(getClass().getName(), "playSound");
+    private fun playSound(ipaValue: String?) {
+        Log.i(javaClass.getName(), "playSound")
 
         // Look up corresponding Audio
-        Log.d(getClass().getName(), "Looking up \"sound_" + ipaValue + "\"");
+        Log.d(javaClass.getName(), "Looking up \"sound_" + ipaValue + "\"")
         // TODO
     }
 
-    private void playWord(WordGson word) {
-        Log.i(getClass().getName(), "playWord");
+    private fun playWord(word: WordGson) {
+        Log.i(javaClass.getName(), "playWord")
 
         // Look up corresponding Audio recording
-        Log.d(getClass().getName(), "Looking up \"" + word.getText() + "\"");
+        Log.d(javaClass.getName(), "Looking up \"" + word.getText() + "\"")
         // TODO
     }
 }
