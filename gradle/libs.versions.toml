@@ -7,7 +7,7 @@ androidXJunit = "1.2.1"
 androidXEspresso = "3.6.1"
 agp = "8.8.2"
 coreKtx = "1.16.0"
-kotlin = "2.1.21"
+kotlin = "2.2.0"
 
 [libraries]
 elimu-content-provider = { group = "ai.elimu", name = "content-provider", version.ref = "elimuContentProvider" }
