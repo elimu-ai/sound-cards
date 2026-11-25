@@ -80,11 +80,11 @@ class OnsetSoundActivity : AppCompatActivity() {
         val idsOfWordsWithImage = ContentProviderUtil.getAllImageGsons(
             applicationContext,
             BuildConfig.CONTENT_PROVIDER_APPLICATION_ID
-        ).mapNotNull { image -> image.word?.id }.toSet()
+        )/*.mapNotNull { image -> image.word?.id }.toSet()
         wordsWithImage = wordsStartingWithUnlockedLetterSound
             .filter { word -> (word.id != null) && (word.id in idsOfWordsWithImage) }
             .take(10)
-            .toMutableList()
+            .toMutableList()*/
         for (word in wordsWithImage) {
             Log.i(TAG, "word.text: \"${word.text}\", word.usageCount: ${word.usageCount}")
         }
