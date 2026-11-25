@@ -57,6 +57,7 @@ class OnsetSoundActivity : AppCompatActivity() {
         alt2ImageView = findViewById<View?>(R.id.alt2ImageView) as ImageView?
 
         // Fetch words starting with one of the unlocked letter-sound correspondences
+
         // TODO: Only include the letter-sounds that the student has unlocked (see https://github.com/elimu-ai/herufi/issues/6).
         //  Until the unlocking mechanism exists, all available letter-sounds are treated as unlocked.
         val unlockedLetterSoundIds = ContentProviderUtil.getAllLetterSoundGsons(
@@ -77,18 +78,16 @@ class OnsetSoundActivity : AppCompatActivity() {
         }*/
         Log.i(TAG, "wordsStartingWithUnlockedLetterSound.size: ${wordsStartingWithUnlockedLetterSound.size}")
 
-        // Fetch 10 most frequent words with a corresponding image
-        val idsOfWordsWithImage = ContentProviderUtil.getAllImageGsons(
-            applicationContext,
-            BuildConfig.CONTENT_PROVIDER_APPLICATION_ID
-        )/*.mapNotNull { image -> image.word?.id }.toSet()
-        wordsWithImage = wordsStartingWithUnlockedLetterSound
-            .filter { word -> (word.id != null) && (word.id in idsOfWordsWithImage) }
-            .take(10)
-            .toMutableList()*/
-        for (word in wordsWithImage) {
-            Log.i(TAG, "word.text: \"${word.text}\", word.usageCount: ${word.usageCount}")
-        }
+        // Only keep words that have been used as image labels
+        wordsWithImage = wordsStartingWithUnlockedLetterSound.filter { word ->
+            val imageGsons = ContentProviderUtil.getImageGsons(
+                word.id,
+                applicationContext,
+                BuildConfig.CONTENT_PROVIDER_APPLICATION_ID
+            )
+            imageGsons.isNotEmpty()
+        }.toMutableList()
+        Log.i(TAG, "wordsWithImage.size: ${wordsWithImage.size}")
     }
 
     override fun onStart() {
