@@ -1,6 +1,8 @@
 package ai.elimu.soundcards.task
 
+import ai.elimu.content_provider.utils.ContentProviderUtil
 import ai.elimu.model.v2.gson.content.WordGson
+import ai.elimu.soundcards.BuildConfig
 import ai.elimu.soundcards.R
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
@@ -17,7 +19,12 @@ import java.util.regex.Pattern
 class OnsetSoundActivity : AppCompatActivity() {
     
     private val TAG = "OnsetSoundActivity"
-    private val wordsWithImage: MutableList<WordGson?>? = null
+
+    /**
+     * The (max 10) most frequent words that start with an unlocked letter-sound correspondence
+     * and have a corresponding image. Populated in [onCreate].
+     */
+    private var wordsWithImage: MutableList<WordGson> = mutableListOf()
 
     private var wordsCorrectlySelected: MutableList<WordGson?>? = null
 
@@ -50,10 +57,37 @@ class OnsetSoundActivity : AppCompatActivity() {
         alt2ImageView = findViewById<View?>(R.id.alt2ImageView) as ImageView?
 
         // Fetch words starting with one of the unlocked letter-sound correspondences
-        // TODO
+        // TODO: Only include the letter-sounds that the student has unlocked (see https://github.com/elimu-ai/herufi/issues/6).
+        //  Until the unlocking mechanism exists, all available letter-sounds are treated as unlocked.
+        val unlockedLetterSoundIds = ContentProviderUtil.getAllLetterSoundGsons(
+            applicationContext,
+            BuildConfig.CONTENT_PROVIDER_APPLICATION_ID
+        ).mapNotNull { it.id }.toSet()
+        Log.i(TAG, "unlockedLetterSoundIds.size: ${unlockedLetterSoundIds.size}")
+        val wordsStartingWithUnlockedLetterSound = ContentProviderUtil.getAllWordGsons(
+            applicationContext,
+            BuildConfig.CONTENT_PROVIDER_APPLICATION_ID
+        ).filter { word ->
+            // The onset sound of a word is the first letter-sound of its letter-sound sequence
+            val onsetLetterSoundId = word.letterSounds?.firstOrNull()?.id
+            (onsetLetterSoundId != null) && (onsetLetterSoundId in unlockedLetterSoundIds)
+        }.sortedByDescending { word ->
+            word.usageCount ?: 0
+        }
+        Log.i(TAG, "wordsStartingWithUnlockedLetterSound.size: ${wordsStartingWithUnlockedLetterSound.size}")
 
         // Fetch 10 most frequent words with a corresponding image
-        // TODO
+        val idsOfWordsWithImage = ContentProviderUtil.getAllImageGsons(
+            applicationContext,
+            BuildConfig.CONTENT_PROVIDER_APPLICATION_ID
+        ).mapNotNull { image -> image.word?.id }.toSet()
+        wordsWithImage = wordsStartingWithUnlockedLetterSound
+            .filter { word -> (word.id != null) && (word.id in idsOfWordsWithImage) }
+            .take(10)
+            .toMutableList()
+        for (word in wordsWithImage) {
+            Log.i(TAG, "word.text: \"${word.text}\", word.usageCount: ${word.usageCount}")
+        }
     }
 
     override fun onStart() {
