@@ -64,16 +64,17 @@ class OnsetSoundActivity : AppCompatActivity() {
             BuildConfig.CONTENT_PROVIDER_APPLICATION_ID
         ).mapNotNull { it.id }.toSet()
         Log.i(TAG, "unlockedLetterSoundIds.size: ${unlockedLetterSoundIds.size}")
+
         val wordsStartingWithUnlockedLetterSound = ContentProviderUtil.getAllWordGsons(
             applicationContext,
             BuildConfig.CONTENT_PROVIDER_APPLICATION_ID
-        ).filter { word ->
+        )/*.filter { word ->
             // The onset sound of a word is the first letter-sound of its letter-sound sequence
             val onsetLetterSoundId = word.letterSounds?.firstOrNull()?.id
             (onsetLetterSoundId != null) && (onsetLetterSoundId in unlockedLetterSoundIds)
         }.sortedByDescending { word ->
             word.usageCount ?: 0
-        }
+        }*/
         Log.i(TAG, "wordsStartingWithUnlockedLetterSound.size: ${wordsStartingWithUnlockedLetterSound.size}")
 
         // Fetch 10 most frequent words with a corresponding image
